@@ -26,4 +26,8 @@ In ETDs, sometimes the title page could not be the first page. This repository c
 **Output:** Text file for each ETD indicating the page name and the respective classification label. title-page or non-title-page
 
 ### Evaluate the model
-
+To evaluate the heuristic model, the data labeled by a human judge is used. Predicted values binary classifier are evaluated against the labels. And measured following evaluation metrics,
+* True Positive, True Negative, False Positive, and False Negative
+* Precision
+* Recall
+* Accuracy
