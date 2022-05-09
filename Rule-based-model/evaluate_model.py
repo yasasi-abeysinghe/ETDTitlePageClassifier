@@ -1,4 +1,4 @@
-from sklearn.metrics import confusion_matrix, precision_score, recall_score
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, accuracy_score
 
 
 def get_true_y():
@@ -41,9 +41,10 @@ def get_confusion_matrix_values(y_true, y_pred):
     print("False Negative : " + str(fn))
 
 
-def get_precision_recall_scores(y_true, y_pred):
+def get_precision_recall_accuracy_scores(y_true, y_pred):
     print("\nPrecision: " + str(precision_score(y_true, y_pred)))
     print("Recall: " + str(recall_score(y_true, y_pred)))
+    print("Accuracy: " + str(accuracy_score(y_true, y_pred)))
 
 
 if __name__ == "__main__":
@@ -51,4 +52,4 @@ if __name__ == "__main__":
     y_pred = get_pred_y()
 
     get_confusion_matrix_values(y_true, y_pred)
-    get_precision_recall_scores(y_true, y_pred)
+    get_precision_recall_accuracy_scores(y_true, y_pred)
