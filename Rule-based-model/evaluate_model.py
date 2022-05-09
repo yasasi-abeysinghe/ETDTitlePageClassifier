@@ -1,34 +1,43 @@
+import os
 from sklearn.metrics import confusion_matrix, precision_score, recall_score, accuracy_score
 
 
 def get_true_y():
-    file = open("./Data/Labels/label_1.txt", "r")
-    content = file.read()
-    first_3_pages = content.split("\n")[:3]
+    path = "./Data/Labels/"
+    dir_list = os.listdir(path)
 
     y_true = []
 
-    for page in first_3_pages:
-        if page.split(", \t")[1] == "Label-TitlePage":
-            y_true.append(1)
-        else:
-            y_true.append(0)
+    for filename in dir_list:
+        file = open(path + filename, "r")
+        content = file.read()
+        first_3_pages = content.split("\n")[:3]
+
+        for page in first_3_pages:
+            if page.split(", \t")[1] == "Label-TitlePage":
+                y_true.append(1)
+            else:
+                y_true.append(0)
 
     return y_true
 
 
 def get_pred_y():
-    file = open("./Data/Output/label_1.txt", "r")
-    content = file.read()
-    first_3_pages = content.split("\n")
+    path = "./Data/Output/"
+    dir_list = os.listdir(path)
 
     y_pred = []
 
-    for page in first_3_pages:
-        if page.split(", ")[1] == "title-page":
-            y_pred.append(1)
-        else:
-            y_pred.append(0)
+    for filename in dir_list:
+        file = open(path + filename, "r")
+        content = file.read()
+        first_3_pages = content.split("\n")
+
+        for page in first_3_pages:
+            if page.split(", ")[1] == "title-page":
+                y_pred.append(1)
+            else:
+                y_pred.append(0)
 
     return y_pred
 
