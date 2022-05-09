@@ -1,7 +1,8 @@
-from read_ocr_text import get_first_n_pages
+import os
 import nltk
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+from read_ocr_text import get_first_n_pages
 
 nltk.download('punkt')
 from nltk.tokenize import word_tokenize
@@ -30,7 +31,7 @@ def get_cosine_similarities(text_matrix):
     return cosine_similarities
 
 
-def classify_pages(cosine_similarities):
+def get_labels_for_pages(cosine_similarities):
     page_labels = []
     similarity_scores = []
     for i in range(n):
@@ -48,15 +49,13 @@ def classify_pages(cosine_similarities):
     return page_labels
 
 
-def write_labels(page_labels):
-    file = open("Rule-based-model/Data/Output/label_1.txt", "w")
-    print(page_labels)
+def write_labels(page_labels, output_file):
+    file = open(output_file, "w")
     file.write('\n'.join("{}, {}".format(x[0], x[1]) for x in page_labels))
 
 
-if __name__ == "__main__":
-    n = 3
-    first_n_pages = get_first_n_pages("Rule-based-model/Data/Input/ETD_1.txt", n)
+def classify_ETD(etd_text_file, output_file):
+    first_n_pages = get_first_n_pages(etd_text_file, n)
 
     matrix = []
     for page in first_n_pages:
@@ -65,5 +64,18 @@ if __name__ == "__main__":
 
     arr = np.array(matrix)
     cosine_similarities = get_cosine_similarities(arr)[0]
-    page_labels = classify_pages(cosine_similarities)
-    write_labels(page_labels)
+    page_labels = get_labels_for_pages(cosine_similarities)
+    write_labels(page_labels, output_file)
+
+
+if __name__ == "__main__":
+    n = 3
+
+    input_path = "Rule-based-model/Data/Input/"
+    output_path = "Rule-based-model/Data/Output/"
+    dir_list = os.listdir(input_path)
+
+    for filename in dir_list:
+        input_file = input_path + filename
+        output_file = output_path + filename.replace("ETD", "label")
+        classify_ETD(input_file, output_file)
