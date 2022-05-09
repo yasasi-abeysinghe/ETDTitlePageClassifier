@@ -3,7 +3,7 @@ In ETDs, sometimes the title page could not be the first page. This repository c
 
 ## Rule-based-model 
 
-###Heuristic Classifier
+### Heuristic Classifier
 
 **Assumption:** The title page is in the first 3 pages of an ETD. Hence, n=3.
 
