@@ -10,8 +10,8 @@ In ETDs, sometimes the title page could not be the first page. This repository c
 **Input:** The texts from ETDs are extracted using AWS Textract.  Those OCRed Text files are used as input into the heuristic classifier.
 
 **Method:** 
-1. Vectorize the text in first n pages using One-Hot Encoding word embedding technique. The features considered would be ["partial", "fulfillment", "requirements"]. 
-2. Then measure the cosine similarity between the query vector [1, 1, 1].
+1. Vectorize the text in first n pages using One-Hot Encoding word embedding technique. The features considered would be ["submitted", partial", "fulfillment", "requirements", "accepted"]. 
+2. Then measure the cosine similarity between the query vector [1, 1, 1, 1, 1].
 3. Then, find the top ranked page and labeled it as 'title-page'
 
 **Output:** Text file for each ETD indicating the page name and the respective classification label. title-page or non-title-page
