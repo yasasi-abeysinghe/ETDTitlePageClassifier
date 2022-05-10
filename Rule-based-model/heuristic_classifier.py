@@ -15,7 +15,7 @@ def tokenize_text(page_text):
 
 
 def text_vectorization(tokenized_text):
-    features = ["partial", "fulfillment", "requirements"]
+    features = ["submitted", "partial", "fulfillment", "requirements", "accepted"]
     vector = []
     for feature in features:
         if feature in tokenized_text:
@@ -26,7 +26,7 @@ def text_vectorization(tokenized_text):
 
 
 def get_cosine_similarities(text_matrix):
-    query_matrix = np.array([[1, 1, 1]])
+    query_matrix = np.array([[1, 1, 1, 1, 1]])
     cosine_similarities = cosine_similarity(query_matrix, text_matrix)
     return cosine_similarities
 
