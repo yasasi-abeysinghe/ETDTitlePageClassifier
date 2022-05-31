@@ -1,0 +1,3 @@
+etd_page1, title-page
+etd_page2, non-title-page
+etd_page3, non-title-page
