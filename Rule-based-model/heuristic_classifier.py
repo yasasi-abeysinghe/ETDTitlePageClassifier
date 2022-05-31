@@ -15,7 +15,9 @@ def tokenize_text(page_text):
 
 
 def text_vectorization(tokenized_text):
-    features = ["submitted", "partial", "fulfillment", "requirements", "accepted"]
+    features = ['copyright', 'degree', 'department', 'dissertation', 'doctor', 'faculty', 'fulfillment', 'graduate',
+                'institute', 'owner', 'partial', 'permission', 'philosophy', 'prohibited', 'reproduced', 'reproduction',
+                'requirements', 'submitted', 'thesis', 'university']
     vector = []
     for feature in features:
         if feature in tokenized_text:
@@ -26,7 +28,7 @@ def text_vectorization(tokenized_text):
 
 
 def get_cosine_similarities(text_matrix):
-    query_matrix = np.array([[1, 1, 1, 1, 1]])
+    query_matrix = np.array([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
     cosine_similarities = cosine_similarity(query_matrix, text_matrix)
     return cosine_similarities
 
@@ -74,6 +76,8 @@ if __name__ == "__main__":
     input_path = "./Data/Input/"
     output_path = "./Rule-based-model/Output/"
     dir_list = os.listdir(input_path)
+
+    dir_list.sort(key=lambda x: int(x[4:-4]))
 
     for filename in dir_list:
         input_file = input_path + filename
