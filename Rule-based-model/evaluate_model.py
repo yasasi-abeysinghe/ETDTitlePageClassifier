@@ -3,7 +3,7 @@ from sklearn.metrics import confusion_matrix, precision_score, recall_score, acc
 
 
 def get_true_y():
-    path = "./Data/Labels/"
+    path = "./Data/Input/"
     dir_list = os.listdir(path)
 
     y_true = []
@@ -14,7 +14,7 @@ def get_true_y():
         first_3_pages = content.split("\n")[:3]
 
         for page in first_3_pages:
-            if page.split(", \t")[1] == "Label-TitlePage":
+            if page.split(", ")[1] == "title-page":
                 y_true.append(1)
             else:
                 y_true.append(0)
@@ -23,7 +23,7 @@ def get_true_y():
 
 
 def get_pred_y():
-    path = "./Data/Output/"
+    path = "./Rule-based-model/Output/"
     dir_list = os.listdir(path)
 
     y_pred = []

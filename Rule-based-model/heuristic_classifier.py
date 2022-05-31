@@ -35,7 +35,7 @@ def get_labels_for_pages(cosine_similarities):
     page_labels = []
     similarity_scores = []
     for i in range(n):
-        similarity_scores.append((cosine_similarities[i], "etd1_page" + str(i + 1)))
+        similarity_scores.append((cosine_similarities[i], "etd_page" + str(i + 1)))
     similarity_scores.sort(reverse=True)
     top = True
     for value in similarity_scores:
@@ -71,8 +71,8 @@ def classify_ETD(etd_text_file, output_file):
 if __name__ == "__main__":
     n = 3
 
-    input_path = "Rule-based-model/Data/Input/"
-    output_path = "Rule-based-model/Data/Output/"
+    input_path = "./Data/Input/"
+    output_path = "./Rule-based-model/Output/"
     dir_list = os.listdir(input_path)
 
     for filename in dir_list:
