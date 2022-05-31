@@ -3,8 +3,10 @@ from sklearn.metrics import confusion_matrix, precision_score, recall_score, acc
 
 
 def get_true_y():
-    path = "./Data/Input/"
+    path = "../Data/Labels/"
     dir_list = os.listdir(path)
+
+    dir_list.sort(key=lambda x: int(x[6:-4]))
 
     y_true = []
 
@@ -23,8 +25,10 @@ def get_true_y():
 
 
 def get_pred_y():
-    path = "./Rule-based-model/Output/"
+    path = "./Output/"
     dir_list = os.listdir(path)
+
+    dir_list.sort(key=lambda x: int(x[6:-4]))
 
     y_pred = []
 
