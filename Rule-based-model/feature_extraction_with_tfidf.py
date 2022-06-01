@@ -64,8 +64,12 @@ def feature_extraction(num_of_features):
     return terms
 
 
+def write_features(terms):
+    file = open("features.txt", "w")
+    file.write(', '.join(terms))
+
+
 if __name__ == "__main__":
     num_of_features = 20
     terms = feature_extraction(num_of_features)
-    print("The top " + str(num_of_features) + " features: ")
-    print(terms)
+    write_features(terms)
