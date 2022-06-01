@@ -52,9 +52,9 @@ def generate_train_set():
     return train_document_set
 
 
-def feature_extraction():
+def feature_extraction(num_of_features):
     train_document_set = generate_train_set()
-    vectorizer = TfidfVectorizer(stop_words='english', max_features=20)
+    vectorizer = TfidfVectorizer(stop_words='english', max_features=num_of_features)
     X = vectorizer.fit_transform(train_document_set)
     terms = vectorizer.get_feature_names()
 
@@ -64,6 +64,8 @@ def feature_extraction():
     return terms
 
 
-terms = feature_extraction()
-print("Top 20 features from title pages: ")
-print(terms)
+if __name__ == "__main__":
+    num_of_features = 20
+    terms = feature_extraction(num_of_features)
+    print("The top " + str(num_of_features) + " features: ")
+    print(terms)
