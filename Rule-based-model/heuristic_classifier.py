@@ -15,9 +15,6 @@ def tokenize_text(page_text):
 
 
 def text_vectorization(tokenized_text):
-    features = ['copyright', 'degree', 'department', 'dissertation', 'doctor', 'faculty', 'fulfillment', 'graduate',
-                'institute', 'owner', 'partial', 'permission', 'philosophy', 'prohibited', 'reproduced', 'reproduction',
-                'requirements', 'submitted', 'thesis', 'university']
     vector = []
     for feature in features:
         if feature in tokenized_text:
@@ -28,7 +25,7 @@ def text_vectorization(tokenized_text):
 
 
 def get_cosine_similarities(text_matrix):
-    query_matrix = np.array([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
+    query_matrix = np.ones((1, len(features)), dtype=int)
     cosine_similarities = cosine_similarity(query_matrix, text_matrix)
     return cosine_similarities
 
@@ -39,7 +36,6 @@ def sort_similarity_score(cosine_similarities, no_of_pages):
         similarity_scores.append((cosine_similarities[i], "etd_page" + str(i + 1)))
     similarity_scores.sort(reverse=True)
     top = similarity_scores[0][0]
-    threshold = 0.9
     if top > threshold:
         return similarity_scores
     else:
@@ -110,7 +106,16 @@ def classify_ETD(etd_text_file, output_file):
             break
 
 
+def get_features():
+    file = open("./Rule-based-model/features.txt", "r")
+    content = file.read()
+    return content.split(", ")
+
+
 if __name__ == "__main__":
+
+    features = get_features()
+    threshold = 0.9  # Update the threshold here
 
     input_path = "./Data/Input/"
     output_path = "./Rule-based-model/Output/"
