@@ -6,7 +6,7 @@ In ETDs, sometimes the title page could not be the first page. This repository c
 ### Feature Extraction with TF-IDF Vectorizer
 To automatically pick the features to be used for the heuristic classifier, the `sklearn.feature_extraction.text.TfidfVectorizer` will be used. 
 
-**Method: **
+**Method:**
 1. Extract the text content of title pages of 500 ETDs.
 2. Get the top n features which can be used to identify the title pages.  
 
