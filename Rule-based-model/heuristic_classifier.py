@@ -33,12 +33,45 @@ def get_cosine_similarities(text_matrix):
     return cosine_similarities
 
 
-def get_labels_for_pages(cosine_similarities):
-    page_labels = []
+def sort_similarity_score(cosine_similarities, no_of_pages):
     similarity_scores = []
-    for i in range(n):
+    for i in range(no_of_pages):
         similarity_scores.append((cosine_similarities[i], "etd_page" + str(i + 1)))
     similarity_scores.sort(reverse=True)
+    top = similarity_scores[0][0]
+    threshold = 0.9
+    if top > threshold:
+        return similarity_scores
+    else:
+        if no_of_pages == 10:
+            return similarity_scores
+        else:
+            return []
+
+
+# check the cosine score and if that is less than 0.63.... then go for next page and calculate cosine similarity
+# till that is above 0.64? till 10 pages. After 10, assign the title page label whatever page with the highest
+# cosine score
+def refactor_page_labels(page_labels):
+    i = 0
+    flag = False
+    new_page_label_list = []
+    for page in page_labels:
+        page_label = page[1]
+        if i < 3:
+            new_page_label_list.append(page)
+            if page_label == "title-page":
+                flag = True
+        elif not flag:
+            new_page_label_list.append(page)
+            if page_label == "title-page":
+                break
+        i += 1
+    return new_page_label_list
+
+
+def get_labels_for_pages(similarity_scores):
+    page_labels = []
     top = True
     for value in similarity_scores:
         if top:
@@ -47,8 +80,8 @@ def get_labels_for_pages(cosine_similarities):
         else:
             new_tuple = value[1:] + ("non-title-page",)
         page_labels.append(new_tuple)
-    page_labels.sort()
-    return page_labels
+    page_labels.sort(key=lambda x: int(x[0][8:]))
+    return refactor_page_labels(page_labels)
 
 
 def write_labels(page_labels, output_file):
@@ -57,21 +90,27 @@ def write_labels(page_labels, output_file):
 
 
 def classify_ETD(etd_text_file, output_file):
-    first_n_pages = get_first_n_pages(etd_text_file, n)
+    for n in range(3, 11):
+        print(etd_text_file)
+        print(n)
+        first_n_pages = get_first_n_pages(etd_text_file, n)
 
-    matrix = []
-    for page in first_n_pages:
-        tokenized_text = tokenize_text(page)
-        matrix.append(text_vectorization(tokenized_text))
+        matrix = []
+        for page in first_n_pages:
+            tokenized_text = tokenize_text(page)
+            matrix.append(text_vectorization(tokenized_text))
 
-    arr = np.array(matrix)
-    cosine_similarities = get_cosine_similarities(arr)[0]
-    page_labels = get_labels_for_pages(cosine_similarities)
-    write_labels(page_labels, output_file)
+        arr = np.array(matrix)
+        cosine_similarities = get_cosine_similarities(arr)[0]
+        print(cosine_similarities)
+        similarity_scores = sort_similarity_score(cosine_similarities, n)
+        if similarity_scores:
+            page_labels = get_labels_for_pages(similarity_scores)
+            write_labels(page_labels, output_file)
+            break
 
 
 if __name__ == "__main__":
-    n = 3
 
     input_path = "./Data/Input/"
     output_path = "./Rule-based-model/Output/"
