@@ -2,48 +2,35 @@ import os
 from sklearn.metrics import confusion_matrix, precision_score, recall_score, accuracy_score
 
 
-def get_true_y():
-    path = "../Data/Labels/"
-    dir_list = os.listdir(path)
+def get_true_y(filename):
+    y = []
+    file = open(filename, "r")
+    content = file.read()
+    first_3_pages = content.split("\n")
 
-    dir_list.sort(key=lambda x: int(x[6:-4]))
+    for page in first_3_pages:
+        if page.split(", ")[1] == "title-page":
+            y.append(1)
+        else:
+            y.append(0)
 
-    y_true = []
-
-    for filename in dir_list:
-        file = open(path + filename, "r")
-        content = file.read()
-        first_3_pages = content.split("\n")[:3]
-
-        for page in first_3_pages:
-            if page.split(", ")[1] == "title-page":
-                y_true.append(1)
-            else:
-                y_true.append(0)
-
-    return y_true
+    return y
 
 
-def get_pred_y():
-    path = "./Output/"
-    dir_list = os.listdir(path)
+def get_pred_y(filename):
+    y = []
 
-    dir_list.sort(key=lambda x: int(x[6:-4]))
+    file = open(filename, "r")
+    content = file.read()
+    first_3_pages = content.split("\n")
 
-    y_pred = []
+    for page in first_3_pages:
+        if page.split(", ")[1] == "title-page":
+            y.append(1)
+        else:
+            y.append(0)
 
-    for filename in dir_list:
-        file = open(path + filename, "r")
-        content = file.read()
-        first_3_pages = content.split("\n")
-
-        for page in first_3_pages:
-            if page.split(", ")[1] == "title-page":
-                y_pred.append(1)
-            else:
-                y_pred.append(0)
-
-    return y_pred
+    return y
 
 
 def get_confusion_matrix_values(y_true, y_pred):
@@ -61,8 +48,24 @@ def get_precision_recall_accuracy_scores(y_true, y_pred):
 
 
 if __name__ == "__main__":
-    y_true = get_true_y()
-    y_pred = get_pred_y()
+    y_true = []
+    y_pred = []
+    for i in range(500):
+        label_filename = "../Data/Labels/label_" + str(i+1) + ".txt"
+        y1 = get_true_y(label_filename)
+
+        output_filename = "./Output/label_" + str(i+1) + ".txt"
+        y2 = get_pred_y(output_filename)
+
+        diff = len(y1) - len(y2)
+        if diff > 0:
+            for j in range(diff):
+                y2.append(0)
+        elif diff < 0:
+            y2 = y2[:diff]
+
+        y_true.extend(y1)
+        y_pred.extend(y2)
 
     get_confusion_matrix_values(y_true, y_pred)
     get_precision_recall_accuracy_scores(y_true, y_pred)
